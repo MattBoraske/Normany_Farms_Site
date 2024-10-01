@@ -1,5 +1,5 @@
 import React from 'react';
-import Clients from '../components/Clients';
+import Partners from '../components/Partners';
 import Cta from '../components/Cta';
 import Footer from '../components/Footer';
 import Hero from '../components/Hero';
@@ -14,9 +14,6 @@ const Home = () => {
             <Hero />
             <Intro />
             <Services />
-            <Portfolio />
-            <Clients />
-            <Cta/>
             <Footer />
         </>
 
