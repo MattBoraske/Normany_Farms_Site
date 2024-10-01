@@ -1,33 +1,51 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './components/HomePage';
-import AboutUs from './components/AboutUs';
-import Calendar from './components/Calendar';
-import ContactUs from './components/ContactUs';
-import Donations from './components/Donations';
-import Payments from './components/Payments';
-import Volunteer from './components/Volunteer';
-import WhatWeDo from './components/WhatWeDo';
+import React, { useEffect } from 'react';
+import AOS from 'aos';
+import "aos/dist/aos.css";
+import './index.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from 'react-router-dom';
+// All pages
+import Home from './pages/Home';
+import Contact from './pages/Contact';
+import DemoProduct from './pages/DemoProduct';
 
-import './App.css';
+import {useDocTitle} from './components/CustomHook';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
+  useEffect(() => {
+    const aos_init = () => {
+      AOS.init({
+        once: true,
+        duration: 1000,
+        easing: 'ease-out-cubic',
+      });
+    }
+
+    window.addEventListener('load', () => {
+      aos_init();
+    });
+  }, []);
+
+  useDocTitle("MLD | Molad e Konsult - Bespoke Web and Mobile Applications");
+
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/donations" element={<Donations />} />
-          <Route path="/payments" element={<Payments />} />
-          <Route path="/volunteer" element={<Volunteer />} />
-          <Route path="/what-we-do" element={<WhatWeDo />} />
-        </Routes>
-      </div>
-    </Router>
+    <>
+      <Router>
+        <ScrollToTop>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/get-demo" element={<DemoProduct />} /> 
+          </Routes>
+        </ScrollToTop>
+      </Router>
+    </>
   );
 }
+
 
 export default App;
