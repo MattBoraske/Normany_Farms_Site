@@ -11,7 +11,7 @@ const AboutUs = () => {
             <Header />
             <div className="mission-statement-about-us">
                 <h2>Mission</h2>
-                <p>To provide therapeutic opportunities to individuals with disabilities through a program of therapeutic horseback riding. We wish to provide this service in a safe and enjoyable atmosphere to as many members of the community as possible.</p>
+                <p>morgan was here! To provide therapeutic opportunities to individuals with disabilities through a program of therapeutic horseback riding. We wish to provide this service in a safe and enjoyable atmosphere to as many members of the community as possible.</p>
             </div>
             <div className="history-section">
                 <h3>Our History</h3>
