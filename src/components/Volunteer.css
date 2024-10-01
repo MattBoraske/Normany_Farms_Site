@@ -1,0 +1,32 @@
+.volunteers {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.volunteers h2, .volunteers h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.volunteers p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.volunteers ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.volunteers li {
+    background: #f9f9f9;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.volunteers a {
+    color: #007bff;
+    text-decoration: none;
+}

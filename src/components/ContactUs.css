@@ -1,0 +1,20 @@
+.contact-us {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.contact-us h2, .contact-us h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.contact-us p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.contact-us a {
+    color: #007bff;
+    text-decoration: none;
+}

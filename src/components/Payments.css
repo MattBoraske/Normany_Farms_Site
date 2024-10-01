@@ -1,0 +1,30 @@
+.payments {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center; /* Center align text */
+}
+
+.payments h2, .payments h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.pay-now-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.pay-now-button:hover {
+    background-color: #0056b3;
+}
