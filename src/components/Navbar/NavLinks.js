@@ -9,7 +9,7 @@ const NavLinks = () => {
                 About Us
             </HashLink>
             <HashLink className="px-4 font-extrabold text-gray-500 hover:text-blue-900" smooth to="/#services">
-                Services
+                Our Services
             </HashLink>
             <HashLink className="px-4 font-extrabold text-gray-500 hover:text-blue-900" smooth to="/#events">
                 Upcoming Events
