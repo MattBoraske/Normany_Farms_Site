@@ -29,7 +29,7 @@ function App() {
     });
   }, []);
 
-  useDocTitle("Normandy Farms");
+  useDocTitle("Normandy Farm");
 
   return (
     <>
