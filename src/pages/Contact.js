@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '../components/Navbar/NavBar';
 import Footer from '../components/Footer';
-import {useDocTitle} from '../components/CustomHook';
-import axios from 'axios';
-// import emailjs from 'emailjs-com';
+import { useDocTitle } from '../components/CustomHook';
+import emailjs from 'emailjs-com';
 import Notiflix from 'notiflix';
+
+const EMAILJS_USER = 'dyhu0-g5cWev2NsJF';
+const EMAILJS_SERVICE_ID = 'service_9rcmihc';
+const EMAILJS_TEMPLATE_ID = 'template_ogno9us';
 
 const Contact = () => {
     useDocTitle('Normandy Farms - Contact Us')
@@ -13,10 +16,16 @@ const Contact = () => {
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const [message, setMessage] = useState('')
-    const [errors, setErrors] = useState([])
+    const [topic, setTopic] = useState('')
+    const [customSubject, setCustomSubject] = useState('')
+    const [errors, setErrors] = useState({})
+
+    useEffect(() => {
+        emailjs.init(EMAILJS_USER);
+    }, []);
 
     const clearErrors = () => {
-        setErrors([])
+        setErrors({})
     }
 
     const clearInput = () => {
@@ -25,56 +34,101 @@ const Contact = () => {
         setEmail('')
         setPhone('')
         setMessage('')
+        setTopic('')
+        setCustomSubject('')
+    }
+
+    const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    const validatePhone = (phone) => {
+        const phoneNumber = phone.replace(/\D/g, '');
+        return phoneNumber.length === 10;
+    }
+
+    const formatPhoneNumber = (value) => {
+        if (!value) return value;
+        const phoneNumber = value.replace(/[^\d]/g, '');
+        const phoneNumberLength = phoneNumber.length;
+        if (phoneNumberLength < 4) return phoneNumber;
+        if (phoneNumberLength < 7) {
+            return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+        }
+        return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+    }
+
+    const handlePhoneChange = (e) => {
+        const formattedPhoneNumber = formatPhoneNumber(e.target.value);
+        setPhone(formattedPhoneNumber);
     }
 
     const sendEmail = (e) => {
         e.preventDefault();
+        clearErrors();
+
+        let newErrors = {};
+
+        // Check for empty required fields
+        if (!firstName.trim()) newErrors.firstName = 'First name is required';
+        if (!lastName.trim()) newErrors.lastName = 'Last name is required';
+        if (!email.trim()) newErrors.email = 'Email is required';
+        if (!phone.trim()) newErrors.phone = 'Phone number is required';
+        if (!topic) newErrors.topic = 'Please select a topic';
+        if (!customSubject.trim()) newErrors.customSubject = 'Subject is required';
+        if (!message.trim()) newErrors.message = 'Message is required';
+
+        // Validate email and phone if they're not empty
+        if (email && !validateEmail(email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+        if (phone && !validatePhone(phone)) {
+            newErrors.phone = 'Please enter a valid 10-digit phone number';
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
         document.getElementById('submitBtn').disabled = true;
         document.getElementById('submitBtn').innerHTML = 'Loading...';
-        let fData = new FormData();
-        fData.append('first_name', firstName)
-        fData.append('last_name', lastName)
-        fData.append('email', email)
-        fData.append('phone_number', phone)
-        fData.append('message', message)
 
-        axios({
-            method: "post",
-            url: process.env.REACT_APP_CONTACT_API,
-            data: fData,
-            headers: {
-                'Content-Type':  'multipart/form-data'
-            }
-        })
-        .then(function (response) {
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('submitBtn').innerHTML = 'send message';
-            clearInput()
-            //handle success
-            Notiflix.Report.success(
-                'Success',
-                response.data.message,
-                'Okay',
-            );
-        })
-        .catch(function (error) {
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('submitBtn').innerHTML = 'send message';
-            //handle error
-            const { response } = error;
-            if(response.status === 500) {
-                Notiflix.Report.failure(
-                    'An error occurred',
-                    response.data.message,
+        const topicSubject = topic === 'Topic A' ? 'Topic A Subject' : 'Topic B Subject';
+        const fullSubject = `[${topicSubject}]: ${customSubject}`;
+
+        const templateParams = {
+            from_name: `${firstName} ${lastName}`,
+            to_name: 'Your Name',
+            subject: fullSubject,
+            message: message,
+            reply_to: email,
+            phone_number: phone,
+            topic: topic
+        };
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+            .then((response) => {
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').innerHTML = 'send message';
+                clearInput();
+                Notiflix.Report.success(
+                    'Success',
+                    'Your message has been sent successfully!',
                     'Okay',
                 );
-            }
-            if(response.data.errors !== null) {
-                setErrors(response.data.errors)
-            }
-            
-        });
+            }, (error) => {
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').innerHTML = 'send message';
+                Notiflix.Report.failure(
+                    'An error occurred',
+                    'Failed to send the message. Please try again later.',
+                    'Okay',
+                );
+            });
     }
+
     return (
         <>
             <div>
@@ -100,8 +154,8 @@ const Contact = () => {
                                         onChange={(e)=> setFirstName(e.target.value)}
                                         onKeyUp={clearErrors}
                                     />
-                                    {errors && 
-                                        <p className="text-red-500 text-sm">{errors.first_name}</p>
+                                    {errors.firstName && 
+                                        <p className="text-red-500 text-sm">{errors.firstName}</p>
                                     }
                                 </div>
                                 
@@ -115,8 +169,8 @@ const Contact = () => {
                                         onChange={(e)=> setLastName(e.target.value)}
                                         onKeyUp={clearErrors}
                                     />
-                                    {errors && 
-                                        <p className="text-red-500 text-sm">{errors.last_name}</p>
+                                    {errors.lastName && 
+                                        <p className="text-red-500 text-sm">{errors.lastName}</p>
                                     }
                                 </div>
 
@@ -130,7 +184,7 @@ const Contact = () => {
                                         onChange={(e)=> setEmail(e.target.value)}
                                         onKeyUp={clearErrors}   
                                     />
-                                    {errors && 
+                                    {errors.email && 
                                         <p className="text-red-500 text-sm">{errors.email}</p>
                                     }
                                 </div>
@@ -139,14 +193,46 @@ const Contact = () => {
                                     <input
                                         name="phone_number" 
                                         className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-                                        type="number" 
+                                        type="tel" 
                                         placeholder="Phone*"
                                         value={phone}
-                                        onChange={(e)=> setPhone(e.target.value)}
+                                        onChange={handlePhoneChange}
                                         onKeyUp={clearErrors}
                                     />
-                                    {errors && 
-                                        <p className="text-red-500 text-sm">{errors.phone_number}</p>
+                                    {errors.phone && 
+                                        <p className="text-red-500 text-sm">{errors.phone}</p>
+                                    }
+                                </div>
+
+                                <div>
+                                    <select
+                                        name="topic"
+                                        className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                                        value={topic}
+                                        onChange={(e) => setTopic(e.target.value)}
+                                        onBlur={clearErrors}
+                                    >
+                                        <option value="">Select a Topic*</option>
+                                        <option value="Topic A">Topic A</option>
+                                        <option value="Topic B">Topic B</option>
+                                    </select>
+                                    {errors.topic && 
+                                        <p className="text-red-500 text-sm">{errors.topic}</p>
+                                    }
+                                </div>
+
+                                <div>
+                                    <input 
+                                        name="custom_subject"
+                                        className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                                        type="text" 
+                                        placeholder="Subject*"
+                                        value={customSubject}
+                                        onChange={(e)=> setCustomSubject(e.target.value)}
+                                        onKeyUp={clearErrors}
+                                    />
+                                    {errors.customSubject && 
+                                        <p className="text-red-500 text-sm">{errors.customSubject}</p>
                                     }
                                 </div>
                         </div>
@@ -159,7 +245,7 @@ const Contact = () => {
                                 onChange={(e)=> setMessage(e.target.value)}
                                 onKeyUp={clearErrors}
                             ></textarea>
-                            {errors && 
+                            {errors.message && 
                                 <p className="text-red-500 text-sm">{errors.message}</p>
                             }
                         </div>
@@ -169,7 +255,7 @@ const Contact = () => {
                                 Send Message
                             </button>
                         </div>
-                </div>
+                    </div>
                 </form>
                         <div
                             className="w-full  lg:-mt-96 lg:w-2/6 px-8 py-6 ml-auto bg-blue-900 rounded-2xl">
@@ -213,8 +299,6 @@ const Contact = () => {
             </div>
             <Footer />
         </>
-
-
     )
 }
 

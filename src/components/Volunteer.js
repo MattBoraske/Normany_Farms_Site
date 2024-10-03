@@ -1,13 +1,10 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 
 const Volunteer = () => {
-    const navigate = useNavigate();
-
     const handleVolunteerWithUs = (e) => {
         e.preventDefault();
-        navigate('/contact');
-        window.scrollTo(0, 0);
+        // Replace this URL with your actual Google Form URL
+        window.open('https://docs.google.com/forms/d/e/1FAIpQLSe3BL9MTLQQS_E3DfLJNs1LGPKcE2KCLaE4ak33muMShRX-5A/viewform?usp=sf_link', '_blank', 'noopener,noreferrer');
     };
 
     return (
@@ -22,14 +19,16 @@ const Volunteer = () => {
                         <div>
                             <p className='my-3 text-xl text-gray-600 font-semibold'>All volunteers receive in-service training to better support the special needs of our riders.</p>
                         </div>
-                        <Link 
-                            to="/contact" 
+                        <a 
+                            href="https://docs.google.com/forms/d/e/1FAIpQLSe3BL9MTLQQS_E3DfLJNs1LGPKcE2KCLaE4ak33muMShRX-5A/viewform?usp=sf_link"
                             onClick={handleVolunteerWithUs}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="text-white bg-blue-900 hover:bg-blue-800 inline-flex items-center justify-center w-full px-6 py-3 my-4 text-lg shadow-xl rounded-2xl sm:w-auto sm:mb-0"
                         >
                             Volunteer with us
                             <svg className="w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </div>
