@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NavLinks from '../Navbar/NavLinks';
 import { HashLink } from 'react-router-hash-link';
-
+import img from '../../images/logo.png';
 
 const NavBar = () => {
     const [top, setTop] = useState(!window.scrollY);
@@ -9,8 +9,7 @@ const NavBar = () => {
     function handleClick() {
         setisOpen(!isOpen);
     }
-
-
+    
     useEffect(() => {
       const scrollHandler = () => {
         window.pageYOffset > 10 ? setTop(false) : setTop(true)
@@ -18,13 +17,15 @@ const NavBar = () => {
       window.addEventListener('scroll', scrollHandler);
       return () => window.removeEventListener('scroll', scrollHandler);
     }, [top]);
-
+    
     return (
         <nav className={`fixed top-0 w-full z-30 transition duration-300 ease-in-out mb-16 ${!top && 'bg-white shadow-lg'}`}>
             <div className="flex flex-row justify-between items-center py-2">
                 <div className="flex flex-row justify-center md:px-12 md:mx-12 items-center text-center font-semibold">
-                    <HashLink smooth to="/#hero"><h1 className="font-extrabold text-2xl text-blue-900">Normandy Farm</h1></HashLink>
-                    
+                    <HashLink smooth to="/#hero" className="flex items-center">
+                        <img src={img} alt="Normandy Farm Logo" className="h-12 w-12 mr-4" /> {/* Increased right margin */}
+                        <h1 className="font-extrabold text-2xl text-blue-900">Normandy Farm</h1>
+                    </HashLink>
                 </div>
                 <div className="group flex flex-col items-center">
                     <button className="p-2 rounded-lg lg:hidden text-blue-900" onClick={handleClick}>
@@ -40,19 +41,17 @@ const NavBar = () => {
                     <div className='hidden space-x-6 lg:inline-block p-5'>
                         <NavLinks />
                     </div>
-
-                    <div className={`fixed transition-transform duration-300 ease-in-out transit flex justify-center left-0 w-full h-auto rounded-md p-24 bg-white lg:hidden shadow-xl top-14 ${  isOpen ? "block" : "hidden" } `}>
+                    
+                    <div className={`fixed transition-transform duration-300 ease-in-out transit flex justify-center left-0 w-full h-auto rounded-md p-24 bg-white lg:hidden shadow-xl top-14 ${
+ isOpen ? "block" : "hidden" } `}>
                         <div className='flex flex-col space-y-6'>
                             <NavLinks />
-                        </div>                                                
+                        </div>
                     </div>
-
                 </div>
             </div>
         </nav>
     )
-    
 }
-
 
 export default NavBar;
