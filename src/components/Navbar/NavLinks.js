@@ -1,13 +1,20 @@
 import React from 'react';
 import { HashLink } from 'react-router-hash-link';
 
-const NavLinks = ({ className }) => {
+const NavLinks = ({ className, onLinkClick }) => {
+  const handleClick = () => {
+    if (onLinkClick) {
+      onLinkClick();
+    }
+  };
+
   return (
     <div className={className}>
       <HashLink
         className="px-4 font-extrabold text-gray-500 hover:text-blue-900"
         smooth
         to="/#about"
+        onClick={handleClick}
       >
         About Us
       </HashLink>
@@ -15,6 +22,7 @@ const NavLinks = ({ className }) => {
         className="px-4 font-extrabold text-gray-500 hover:text-blue-900"
         smooth
         to="/#services"
+        onClick={handleClick}
       >
         Our Services
       </HashLink>
@@ -22,6 +30,7 @@ const NavLinks = ({ className }) => {
         className="px-4 font-extrabold text-gray-500 hover:text-blue-900"
         smooth
         to="/#volunteer-and-events"
+        onClick={handleClick}
       >
         Volunteer
       </HashLink>
@@ -29,18 +38,22 @@ const NavLinks = ({ className }) => {
         className="px-4 font-extrabold text-gray-500 hover:text-blue-900"
         smooth
         to="/#volunteer-and-events"
+        onClick={handleClick}
       >
         Upcoming Events
       </HashLink>
       <HashLink
         className="px-4 font-extrabold text-gray-500 hover:text-blue-900"
-        to="/"
+        smooth
+        to="/#donations"
+        onClick={handleClick}
       >
         Donations
       </HashLink>
       <HashLink
         className="px-4 font-extrabold text-gray-500 hover:text-blue-900"
         to="/contact#contact"
+        onClick={handleClick}
       >
         Contact Us
       </HashLink>
@@ -50,6 +63,7 @@ const NavLinks = ({ className }) => {
         rel="noopener noreferrer"
         className="px-4 font-extrabold text-gray-500 hover:text-blue-900"
         aria-label="Facebook"
+        onClick={handleClick}
       >
         <svg
           className="w-5 h-5 inline-block"

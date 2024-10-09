@@ -11,6 +11,10 @@ const NavBar = () => {
     setIsOpen(!isOpen);
   };
 
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   useEffect(() => {
     const scrollHandler = () => {
       window.pageYOffset > 10 ? setTop(false) : setTop(true);
@@ -82,7 +86,7 @@ const NavBar = () => {
       >
         {/* Sidebar Content */}
         <div className="flex flex-col p-6 mt-16">
-          <NavLinks className="flex flex-col space-y-6" />
+          <NavLinks className="flex flex-col space-y-6" onLinkClick={closeMenu} />
         </div>
       </div>
     </nav>

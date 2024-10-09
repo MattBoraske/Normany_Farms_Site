@@ -7,7 +7,7 @@ const Services = () => {
     return (
         <div id="services" className="bg-gray-100 py-12">
             <section className="my-4 py-0">
-                <h2 className="my-2 text-center text-3xl text-blue-900 uppercase font-bold">Our Services</h2>
+                <h2 className="my-2 text-center text-2xl text-blue-900 uppercase font-bold">Our Services</h2>
                 <div className="flex justify-center">
                     <div className="w-24 border-b-4 border-blue-900"></div>
                 </div>
