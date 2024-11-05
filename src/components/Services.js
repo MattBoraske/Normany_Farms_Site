@@ -1,7 +1,7 @@
 import React from 'react';
-import img from '../images/warm_up_stretching.svg'; 
-import img2 from '../images/horse_care.svg';
-import img3 from '../images/horse_jumping.svg';
+import img from '../images/services/warm_up_stretching.svg'; 
+import img2 from '../images/services/horse_care.svg';
+import img3 from '../images/services/horse_jumping.svg';
 
 const Services = () => {
     return (

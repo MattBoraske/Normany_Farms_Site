@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import img1 from '../images/Normandy_1.png';
-import img2 from '../images/Normandy_2.png';
-import img3 from '../images/Normandy_3.png';
+
+import img1 from '../images/volunteers/volunteers_1.jpg';
+import img2 from '../images/volunteers/volunteers_2.jpg';
+import img3 from '../images/volunteers/volunteers_3.jpg';
+import img4 from '../images/volunteers/volunteers_4.jpg';
 
 const AboutUs = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const images = [img1, img2, img3];
+  const images = [img3, img4, img2, img1];
 
   const nextImage = useCallback(() => {
     setCurrentImage((prevImage) => (prevImage + 1) % images.length);
@@ -41,7 +43,7 @@ const AboutUs = () => {
       >
         {/* Image Carousel */}
         <div
-          className="w-full lg:w-1/2 flex flex-col lg:mx-4 justify-center my-4 lg:my-0"
+          className="w-full lg:w-3/4 flex flex-col lg:mx-4 justify-center my-4 lg:my-0"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           data-aos="fade-up"
